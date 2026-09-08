@@ -5,7 +5,7 @@ import { api } from "@/lib/api/client";
 import { keys } from "@/lib/api/keys";
 
 const SEV: Record<string, string> = {
-  red: "border-l-2 border-l-negative", amber: "border-l-2 border-l-warning", grey: "",
+  red: "border-l-2 border-l-negative", amber: "border-l-2 border-l-warning", grey: "border-l-2 border-l-neutral",
 };
 const VERB_LABEL: Record<string, string> = {
   reupload: "Re-upload", retry: "Retry", reauthorize: "Reauthorize", review: "Review",
@@ -21,7 +21,13 @@ export default function DashboardPage() {
     mutationFn: (postId: string) => api(`/api/v1/posts/${postId}/retry`, { method: "POST" }),
     onSuccess: () => qc.invalidateQueries({ queryKey: keys.dashboard() }),
   });
-  if (!q.data) return null;
+  if (q.isPending) return <p className="text-[13px] text-neutral">Loading…</p>;
+  if (q.isError || !q.data) return (
+    <div className="rounded-[10px] border border-hairline p-6 text-[13px]">
+      <p>Couldn&rsquo;t load the dashboard.</p>
+      <button onClick={() => q.refetch()} className="mt-2 rounded-[6px] border border-hairline px-3 py-1 hover:border-ink">Try again</button>
+    </div>
+  );
   const { items, stats } = q.data;
   const tiles: [string, number, string][] = [
     ["Accounts connected", stats.accounts_connected, "/accounts"],
@@ -62,8 +68,8 @@ export default function DashboardPage() {
             <div key={i} className={`flex items-center gap-3 rounded-[10px] border border-hairline p-3 ${SEV[it.severity] ?? ""}`}>
               <p className="flex-1 text-[13px]">{it.message}</p>
               {it.type === "failed_post" && it.action === "retry" ? (
-                <button onClick={() => retry.mutate(it.post_id)}
-                  className="rounded-[6px] border border-hairline px-3 py-1 text-[13px] hover:border-ink">
+                <button onClick={() => retry.mutate(it.post_id)} disabled={retry.isPending}
+                  className="rounded-[6px] border border-hairline px-3 py-1 text-[13px] hover:border-ink disabled:opacity-40">
                   Retry
                 </button>
               ) : (
