@@ -16,6 +16,26 @@ test("api throws ApiError with status and detail", async () => {
   expect((err as ApiError).detail).toBe("Email or password is incorrect.");
 });
 
+test("caller headers merge with the JSON default", async () => {
+  const fetchFn = vi.fn(async () => new Response(JSON.stringify({ ok: 1 }), { status: 200 }));
+  vi.stubGlobal("fetch", fetchFn);
+  await api("/x", { headers: { "x-custom": "1" } });
+  expect(fetchFn).toHaveBeenCalledWith("/x", expect.objectContaining({
+    headers: expect.objectContaining({
+      "content-type": "application/json",
+      "x-custom": "1",
+    }),
+  }));
+});
+
+test("non-json error body surfaces as detail", async () => {
+  vi.stubGlobal("fetch", vi.fn(async () =>
+    new Response("gateway exploded", { status: 500 })));
+  const err = await api("/x").catch((e: unknown) => e);
+  expect(err).toBeInstanceOf(ApiError);
+  expect((err as ApiError).detail).toBe("gateway exploded");
+});
+
 test("query keys match the contract", () => {
   expect(keys.videos({ lever: "text_overlay" })).toEqual(["videos", { lever: "text_overlay" }]);
   expect(keys.video("x")).toEqual(["video", "x"]);
