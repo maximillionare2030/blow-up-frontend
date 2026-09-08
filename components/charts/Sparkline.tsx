@@ -12,7 +12,7 @@ export function Sparkline({ points }: { points: { captured_at: string; views: nu
   return (
     <div>
       <svg viewBox={`0 0 ${W} ${H}`} className="w-full" role="img" aria-label="Views over time">
-        <polyline points={coords} fill="none" stroke="var(--color-accent, #c4f82a)" strokeWidth="1.5" />
+        <polyline points={coords} fill="none" stroke="var(--color-neutral)" strokeWidth="1.5" />
       </svg>
       <p className="mt-1 text-[11px] text-neutral">Still moving — results stay provisional.</p>
     </div>

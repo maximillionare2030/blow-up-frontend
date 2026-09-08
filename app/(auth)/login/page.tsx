@@ -40,7 +40,7 @@ export default function LoginPage() {
           <span className="label-11 text-neutral" title="Coming later">Forgot password?</span>
         </div>
         <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)}
-          className="rounded-[6px] border border-hairline px-3 py-2 text-[13px]" required minLength={8} />
+          className="rounded-[6px] border border-hairline px-3 py-2 text-[13px]" required  />
         <Button type="submit" disabled={busy}>Log in</Button>
       </form>
       <p className="mt-4 text-[13px] text-neutral">

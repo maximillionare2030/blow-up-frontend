@@ -80,7 +80,7 @@ function HookLab() {
           <label className="flex aspect-[9/16] cursor-pointer flex-col items-center justify-center rounded-[10px] border border-dashed border-hairline text-[13px] text-neutral hover:border-ink">
             <div>
               {busy ? "Uploading…" : "Drop a video or click to pick"}
-              {uploadError && <p className="mt-2 text-red-500 text-[12px]">{uploadError}</p>}
+              {uploadError && <p className="mt-2 text-negative text-[12px]">{uploadError}</p>}
             </div>
             <input type="file" accept="video/mp4,video/quicktime" className="hidden" onChange={pick} />
           </label>
