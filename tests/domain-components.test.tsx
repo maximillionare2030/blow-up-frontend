@@ -20,10 +20,10 @@ test("exploratory comparisons are labelled", () => {
 
 test("inconclusive renders as a first-class verdict, same weight", () => {
   const { rerender, container } = render(<VerdictBadge verdict="separated" />);
-  const sepClass = container.firstElementChild!.className.replace(/text-\S+|bg-\S+/g, "");
+  const sepClass = container.firstElementChild!.className.replace(/(text|bg)-(accent|positive|negative|warning|neutral|ink|surface\S*)\b/g, "");
   rerender(<VerdictBadge verdict="inconclusive" />);
   expect(screen.getByText("INCONCLUSIVE")).toBeInTheDocument();
-  const incClass = container.firstElementChild!.className.replace(/text-\S+|bg-\S+/g, "");
+  const incClass = container.firstElementChild!.className.replace(/(text|bg)-(accent|positive|negative|warning|neutral|ink|surface\S*)\b/g, "");
   expect(incClass).toBe(sepClass); // identical except color utilities
 });
 
@@ -33,6 +33,19 @@ test("failed post state always carries reason and a verb", () => {
   expect(screen.getByRole("button", { name: /re-upload/i })).toBeInTheDocument();
 });
 
+test("lever chip is read-only by construction", () => {
+  const { container } = render(<LeverChip lever="text_overlay" value="question_form" />);
+  expect(screen.getByText(/text_overlay: question_form/)).toBeInTheDocument();
+  expect(container.querySelector("input, textarea, [contenteditable]")).toBeNull();
+  expect(container.querySelector("button")).toBeNull();
+});
+
+test("state union is closed", () => {
+  // @ts-expect-error invalid state must not typecheck
+  const _bad = <PostState state="bogus" />;
+  expect(true).toBe(true);
+});
+
 test("baseline multiple color derives from value; lime only for winners", () => {
   const { rerender } = render(<BaselineMultiple multiple={3.2} />);
   expect(screen.getByText("3.2x")).toBeInTheDocument();
@@ -40,9 +53,17 @@ test("baseline multiple color derives from value; lime only for winners", () => 
   expect(screen.getByText("—")).toBeInTheDocument();
 });
 
-test("lever chip is read-only by construction", () => {
-  const { container } = render(<LeverChip lever="text_overlay" value="question_form" />);
-  expect(screen.getByText(/text_overlay: question_form/)).toBeInTheDocument();
-  expect(container.querySelector("input, textarea, [contenteditable]")).toBeNull();
-  expect(container.querySelector("button")).toBeNull();
+test("baseline multiple style color is unoverridable", () => {
+  const { rerender, container } = render(<BaselineMultiple multiple={3.2} />);
+  const span = container.querySelector("span");
+  expect(span?.style.color).toBe("var(--color-positive)");
+
+  rerender(<BaselineMultiple multiple={0.5} />);
+  const negSpan = container.querySelector("span");
+  expect(negSpan?.style.color).toBe("var(--color-negative)");
+
+  rerender(<BaselineMultiple multiple={3.2} isWinner={true} />);
+  const winSpan = container.querySelector("span");
+  expect(winSpan?.style.color).toBe("var(--color-ink)");
+  expect(winSpan?.style.background).toBe("var(--color-accent)");
 });

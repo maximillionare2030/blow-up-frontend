@@ -1,21 +1,23 @@
+export type PostStateValue = "not_yet_attempted" | "queued" | "live" | "failed" | "removed";
+
 const VERBS: Record<string, string> = {
   reauthorize: "Reauthorize", reupload: "Re-upload",
   edit_caption: "Edit caption", retry: "Retry",
 };
-const CHIP: Record<string, string> = {
+const CHIP: Record<PostStateValue, string> = {
   not_yet_attempted: "border border-hairline text-neutral",
   queued: "bg-surface-2 text-neutral",
   live: "bg-positive/15 text-positive",
   failed: "bg-negative/15 text-negative",
   removed: "bg-surface-2 text-neutral line-through",
 };
-const LABEL: Record<string, string> = {
+const LABEL: Record<PostStateValue, string> = {
   not_yet_attempted: "not yet attempted", queued: "queued",
   live: "live", failed: "failed", removed: "removed",
 };
 
 export function PostState({ state, failureReason, failureAction, onAction }: {
-  state: keyof typeof CHIP;
+  state: PostStateValue;
   failureReason?: string | null;
   failureAction?: string | null;
   onAction?: () => void;
