@@ -1,8 +1,7 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Filmstrip({ src }: { src: string }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const [frames, setFrames] = useState<string[]>([]);
   useEffect(() => {
     const video = document.createElement("video");
@@ -38,7 +37,6 @@ export function Filmstrip({ src }: { src: string }) {
                 </figcaption>
               </figure>))}
       </div>
-      <video ref={videoRef} className="hidden" />
     </div>
   );
 }

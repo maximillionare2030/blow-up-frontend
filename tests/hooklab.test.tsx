@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { vi } from "vitest";
 const push = vi.fn();
 vi.mock("next/navigation", () => ({
@@ -31,4 +31,23 @@ test("the AI button is disabled until the Analyzer exists", async () => {
   vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify([]), { status: 200 })));
   wrap(<HookLabPage />);
   expect(await screen.findByRole("button", { name: /generate more with ai/i })).toBeDisabled();
+});
+
+test("failed upload surfaces an error and returns to the picker", async () => {
+  const fetchMock = vi.fn(async (url: string) => {
+    if (url.includes("/uploads/presign")) {
+      return new Response(JSON.stringify({ detail: "nope" }), { status: 500 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  });
+  vi.stubGlobal("fetch", fetchMock);
+  const { container } = wrap(<HookLabPage />);
+
+  const fileInput = container.querySelector('input[type="file"]') as HTMLInputElement;
+  fireEvent.change(fileInput, {
+    target: { files: [new File(["x"], "a.mp4", { type: "video/mp4" })] },
+  });
+
+  expect(await screen.findByText(/nope|Upload failed/)).toBeInTheDocument();
+  expect(screen.getByText("Drop a video or click to pick")).toBeInTheDocument();
 });
