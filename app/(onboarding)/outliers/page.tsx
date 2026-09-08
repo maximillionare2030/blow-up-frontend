@@ -16,6 +16,28 @@ export default function OutliersPage() {
   const sorted = [...rows].sort((a, b) => b.baseline_multiple - a.baseline_multiple);
   const best = sorted.slice(0, 2);
   const worst = sorted.slice(-2).reverse();
+
+  if (videos.isPending) {
+    return (
+      <div className="max-w-[760px]">
+        <h1 className="text-2xl font-semibold">Here&rsquo;s what your history actually looks like.</h1>
+        <p className="mt-2 text-[13px] text-neutral">Reading your videos…</p>
+      </div>
+    );
+  }
+
+  if (rows.length === 0) {
+    return (
+      <div className="max-w-[760px]">
+        <h1 className="text-2xl font-semibold">Here&rsquo;s what your history actually looks like.</h1>
+        <p className="mt-2 text-[13px] text-neutral">No history yet — connect an account with published videos, or head to the hook lab.</p>
+        <div className="mt-6 text-right">
+          <Link href="/dashboard" className="text-[13px] text-neutral hover:text-ink">Go to dashboard</Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-[760px]">
       <h1 className="text-2xl font-semibold">Here&rsquo;s what your history actually looks like.</h1>

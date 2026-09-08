@@ -33,3 +33,16 @@ test("connect page shows the no-account-provisioning footnote", async () => {
   wrap(<ConnectPage />);
   expect(await screen.findByText(/never creates or supplies accounts/i)).toBeInTheDocument();
 });
+
+test("connect error is displayed when connect-dev returns 500", async () => {
+  vi.stubGlobal("fetch", vi.fn(async (url: any) => {
+    if (String(url).includes("connect-dev")) {
+      return new Response(JSON.stringify({ detail: "boom" }), { status: 500 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  }));
+  wrap(<ConnectPage />);
+  await userEvent.type(screen.getByPlaceholderText(/@handle/i), "@test");
+  await userEvent.click(screen.getByRole("button", { name: /connect tiktok account/i }));
+  expect(await screen.findByText("boom")).toBeInTheDocument();
+});

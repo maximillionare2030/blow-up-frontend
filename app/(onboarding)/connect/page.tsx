@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api/client";
+import { api, ApiError } from "@/lib/api/client";
 import { keys } from "@/lib/api/keys";
 import { Button } from "@/components/ui/Button";
 
@@ -32,6 +32,11 @@ export default function ConnectPage() {
           Connect TikTok account
         </Button>
       </div>
+      {connect.error && (
+        <p className="mt-2 text-[13px] text-negative">
+          {connect.error instanceof ApiError ? connect.error.detail : "Couldn't connect that account."}
+        </p>
+      )}
       <div className="mt-4 flex flex-col gap-2">
         {[0, 1, 2].map((i) => {
           const a = list[i];

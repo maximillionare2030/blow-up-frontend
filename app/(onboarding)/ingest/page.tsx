@@ -12,7 +12,7 @@ export default function IngestPage() {
   const accounts = useQuery({
     queryKey: keys.accounts(),
     queryFn: () => api<any[]>("/api/v1/accounts"),
-    refetchInterval: 2000,
+    refetchInterval: (query) => { const l = (query.state.data as any[] | undefined) ?? []; return l.length > 0 && l.every((a) => a.baseline_median_views != null) ? false : 2000; },
   });
   const list = accounts.data ?? [];
   const allDone = list.length > 0 && list.every((a) => a.baseline_median_views != null);
