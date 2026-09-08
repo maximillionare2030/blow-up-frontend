@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/lib/api/client";
+import { api, ApiError } from "@/lib/api/client";
 import { keys } from "@/lib/api/keys";
 import { Button } from "@/components/ui/Button";
 import { LeverChip } from "@/components/domain/LeverChip";
@@ -30,8 +30,8 @@ export default function PublishReviewPage() {
     mutationFn: (d: Draft) => api("/api/v1/rounds/publish", { method: "POST", body: JSON.stringify(d) }),
     onSuccess: () => {
       sessionStorage.removeItem("blowup-draft");
-      qc.invalidateQueries({ queryKey: ["videos"] });
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
+      qc.invalidateQueries({ queryKey: keys.videosRoot() });
+      qc.invalidateQueries({ queryKey: keys.dashboardRoot() });
       router.push("/dashboard");
     },
   });
@@ -49,12 +49,18 @@ export default function PublishReviewPage() {
 
   function patch(i: number, p: Partial<DraftVariant>) {
     setDraft((d) => d && { ...d, variants: d.variants.map((v, j) => (j === i ? { ...v, ...p } : v)) });
+    setConfirmed((c) => c.map((x, j) => (j === i ? false : x)));
   }
 
   return (
     <div className="max-w-[820px] pb-24">
       <h1 className="text-2xl font-semibold">Review before publishing.</h1>
       <p className="mt-1 font-mono text-[13px] text-neutral">{n} variants · {accounts} account{accounts > 1 ? "s" : ""}</p>
+      {publish.error && (
+        <p className="mt-4 rounded-[6px] border border-negative px-3 py-2 text-[13px] text-negative">
+          {publish.error instanceof ApiError ? publish.error.detail : "Publish failed — nothing was posted."}
+        </p>
+      )}
       <div className="mt-6 flex flex-col gap-3">
         {draft.variants.map((v, i) => (
           <div key={i} className={`flex items-center gap-4 rounded-[10px] border p-3 ${

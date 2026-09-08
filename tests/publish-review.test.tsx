@@ -43,3 +43,35 @@ test("publishing posts the draft and routes to the dashboard", async () => {
   const publishCall = calls.find(([u]) => u.includes("/rounds/publish"));
   expect(JSON.parse(publishCall[1].body).variants).toHaveLength(2);
 });
+
+test("editing a confirmed cell resets its confirmation", async () => {
+  vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify([]), { status: 200 })));
+  wrap(<PublishReviewPage />);
+  const checkboxes = await screen.findAllByRole("checkbox");
+  await userEvent.click(checkboxes[0]);
+  await userEvent.click(checkboxes[1]);
+  expect(screen.getByText("2 of 2 confirmed")).toBeInTheDocument();
+  const publishButton = screen.getByRole("button", { name: /publish 2 posts/i });
+  expect(publishButton).toBeEnabled();
+  const inputs = screen.getAllByRole("textbox");
+  const captionInput = inputs[0];
+  await userEvent.clear(captionInput);
+  await userEvent.type(captionInput, "edited caption");
+  expect(screen.getByText("1 of 2 confirmed")).toBeInTheDocument();
+  expect(publishButton).toBeDisabled();
+});
+
+test("publish failure shows an error and keeps the draft", async () => {
+  vi.stubGlobal("fetch", vi.fn(async (url: any) => {
+    if (String(url).includes("/rounds/publish")) {
+      return new Response(JSON.stringify({ detail: "vendor down" }), { status: 500 });
+    }
+    return new Response(JSON.stringify([]), { status: 200 });
+  }));
+  wrap(<PublishReviewPage />);
+  const checkboxes = await screen.findAllByRole("checkbox");
+  for (const cb of checkboxes) await userEvent.click(cb);
+  await userEvent.click(screen.getByRole("button", { name: /publish 2 posts/i }));
+  expect(await screen.findByText("vendor down")).toBeInTheDocument();
+  expect(sessionStorage.getItem("blowup-draft")).toBe(JSON.stringify(draft));
+});

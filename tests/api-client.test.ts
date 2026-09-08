@@ -37,10 +37,12 @@ test("non-json error body surfaces as detail", async () => {
 });
 
 test("query keys match the contract", () => {
+  expect(keys.videosRoot()).toEqual(["videos"]);
   expect(keys.videos({ lever: "text_overlay" })).toEqual(["videos", { lever: "text_overlay" }]);
   expect(keys.video("x")).toEqual(["video", "x"]);
   expect(keys.rounds()).toEqual(["rounds"]);
   expect(keys.round("r")).toEqual(["round", "r"]);
   expect(keys.accounts()).toEqual(["accounts"]);
+  expect(keys.dashboardRoot()).toEqual(["dashboard"]);
   expect(keys.dashboard()).toEqual(["dashboard", "needs-attention"]);
 });
