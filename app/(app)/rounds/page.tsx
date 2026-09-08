@@ -28,8 +28,8 @@ export default function RoundsPage() {
         body: JSON.stringify({
           lever,
           account_ids: null,
-          date_from: dateFrom || undefined,
-          date_to: dateTo || undefined,
+          date_from: dateFrom ? new Date(dateFrom + "T00:00:00.000Z").toISOString() : undefined,
+          date_to: dateTo ? new Date(dateTo + "T23:59:59.999Z").toISOString() : undefined,
           include_ingested: includeIngested,
         }),
       }),

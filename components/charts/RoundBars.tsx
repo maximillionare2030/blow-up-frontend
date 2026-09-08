@@ -17,7 +17,7 @@ export function RoundBars({ entries }: { entries: Entry[] }) {
           <div className="h-5 flex-1">
             <div className="h-5 rounded-r-[3px]"
               style={{ width: `${(e.median_multiple / max) * 100}%`,
-                       background: e.is_winner ? "#c4f82a" : "#efefea" }} />
+                       background: e.is_winner ? "var(--color-accent)" : "var(--color-surface-2)" }} />
           </div>
           <BaselineMultiple multiple={e.median_multiple} isWinner={e.is_winner} />
           <span className="font-mono text-[11px] text-neutral">n={e.n}</span>

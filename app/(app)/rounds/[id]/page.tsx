@@ -24,11 +24,17 @@ export default function RoundResultPage() {
 
   const round = q.data;
   const [top, second] = [...round.entries].sort((a: any, b: any) => b.median_multiple - a.median_multiple);
-  const headline = round.verdict === "separated"
-    ? `${top.lever_value} ran ${top.median_multiple}x baseline. ${second?.lever_value ?? "the rest"} ran ${second?.median_multiple ?? "—"}x.`
-    : second
-      ? `No separation. ${top.median_multiple}x vs ${second.median_multiple}x across ${round.video_ids.length} videos. This spread is what noise looks like.`
-      : `Not enough tagged videos yet to compare.`;
+
+  let headline: string;
+  if (!top) {
+    headline = "Not enough tagged videos yet to compare.";
+  } else if (round.verdict === "separated") {
+    headline = `${top.lever_value} ran ${top.median_multiple}x baseline. ${second?.lever_value ?? "the rest"} ran ${second?.median_multiple ?? "—"}x.`;
+  } else if (second) {
+    headline = `No separation. ${top.median_multiple}x vs ${second.median_multiple}x across ${round.video_ids.length} videos. This spread is what noise looks like.`;
+  } else {
+    headline = `Not enough tagged videos yet to compare.`;
+  }
 
   const winner = round.entries.find((e: any) => e.is_winner);
   const date = new Date(round.created_at).toLocaleDateString();
