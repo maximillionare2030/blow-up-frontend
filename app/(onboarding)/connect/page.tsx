@@ -25,12 +25,20 @@ export default function ConnectPage() {
       <p className="mt-2 text-[13px] text-neutral">
         Connect more than one. Comparing accounts is how BlowUp tells you what&rsquo;s working — a single account can&rsquo;t.
       </p>
-      <div className="mt-6 flex gap-2 rounded-[10px] border border-dashed border-hairline p-4">
-        <input value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="@handle"
-          className="flex-1 rounded-[6px] border border-hairline px-3 py-2 text-[13px]" />
-        <Button onClick={() => connect.mutate()} disabled={!handle || connect.isPending}>
+      <div className="mt-6 flex flex-col gap-2 rounded-[10px] border border-dashed border-hairline p-4">
+        <a href="/api/v1/accounts/connect/start"
+          className="rounded-[6px] bg-accent px-3 py-1.5 text-center text-[13px] font-medium text-ink hover:brightness-95">
           Connect TikTok account
-        </Button>
+        </a>
+        {process.env.NEXT_PUBLIC_DEV_CONNECT === "1" && (
+          <div className="flex gap-2">
+            <input value={handle} onChange={(e) => setHandle(e.target.value)} placeholder="@handle"
+              className="flex-1 rounded-[6px] border border-hairline px-3 py-2 text-[13px]" />
+            <Button variant="secondary" onClick={() => connect.mutate()} disabled={!handle || connect.isPending}>
+              Connect (dev)
+            </Button>
+          </div>
+        )}
       </div>
       {connect.error && (
         <p className="mt-2 text-[13px] text-negative">

@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { vi } from "vitest";
+import { afterEach, beforeEach, vi } from "vitest";
 
 const push = vi.fn();
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push, replace: push }) }));
@@ -11,6 +11,9 @@ function wrap(ui: React.ReactNode) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
 }
+
+beforeEach(() => vi.stubEnv("NEXT_PUBLIC_DEV_CONNECT", "1"));
+afterEach(() => vi.unstubAllEnvs());
 
 test("continue is disabled with zero accounts and enables after connect", async () => {
   let accounts: any[] = [];
@@ -24,7 +27,7 @@ test("continue is disabled with zero accounts and enables after connect", async 
   wrap(<ConnectPage />);
   expect(await screen.findByRole("button", { name: /continue/i })).toBeDisabled();
   await userEvent.type(screen.getByPlaceholderText(/@handle/i), "@one");
-  await userEvent.click(screen.getByRole("button", { name: /connect tiktok account/i }));
+  await userEvent.click(screen.getByRole("button", { name: /connect \(dev\)/i }));
   await waitFor(() => expect(screen.getByRole("button", { name: /continue/i })).toBeEnabled());
 });
 
@@ -43,6 +46,6 @@ test("connect error is displayed when connect-dev returns 500", async () => {
   }));
   wrap(<ConnectPage />);
   await userEvent.type(screen.getByPlaceholderText(/@handle/i), "@test");
-  await userEvent.click(screen.getByRole("button", { name: /connect tiktok account/i }));
+  await userEvent.click(screen.getByRole("button", { name: /connect \(dev\)/i }));
   expect(await screen.findByText("boom")).toBeInTheDocument();
 });
