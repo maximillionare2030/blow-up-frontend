@@ -2,3 +2,5 @@ node_modules
 .next/cache
 stitch-designs
 tests
+.env*
+.git
