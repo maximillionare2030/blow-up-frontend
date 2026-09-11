@@ -43,6 +43,15 @@ export default function LoginPage() {
           className="rounded-[6px] border border-hairline px-3 py-2 text-[13px]" required  />
         <Button type="submit" disabled={busy}>Log in</Button>
       </form>
+      <div className="my-4 flex items-center gap-3">
+        <span className="h-px flex-1 bg-hairline" />
+        <span className="label-11 text-neutral">or</span>
+        <span className="h-px flex-1 bg-hairline" />
+      </div>
+      <a href="/api/v1/auth/google/start"
+        className="block rounded-[6px] border border-hairline px-3 py-1.5 text-center text-[13px] hover:border-ink">
+        Continue with Google
+      </a>
       <p className="mt-4 text-[13px] text-neutral">
         New here? <Link className="underline" href="/signup">Create an account</Link>
       </p>
