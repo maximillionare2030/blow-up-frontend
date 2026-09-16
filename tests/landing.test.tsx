@@ -3,6 +3,7 @@ import MarketingLayout from "@/app/(marketing)/layout";
 import { MarketingHeader } from "@/components/marketing/MarketingHeader";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Hero } from "@/components/marketing/Hero";
+import { Pillars } from "@/components/marketing/Pillars";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -38,6 +39,18 @@ describe("hero", () => {
     expect(screen.getByText("61% @ 2s")).toBeInTheDocument();
     expect(screen.getByText("1.4M Reach")).toBeInTheDocument();
     expect(container.querySelectorAll("img")).toHaveLength(0);
+  });
+});
+
+describe("pillars", () => {
+  it("renders three pillar cards under #features", () => {
+    const { container } = render(<Pillars />);
+    expect(container.querySelector("#features")).toBeTruthy();
+    expect(screen.getByText("Surgical 0–2s Hook Diagnostics")).toBeInTheDocument();
+    expect(screen.getByText("Fleet Ingestion & Dispatch")).toBeInTheDocument();
+    expect(screen.getByText("Empirical Retention Telemetry")).toBeInTheDocument();
+    expect(screen.getByText("65.4% Hold")).toBeInTheDocument();
+    expect(screen.getByText("79% outlier")).toBeInTheDocument();
   });
 });
 
