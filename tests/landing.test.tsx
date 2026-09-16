@@ -5,6 +5,9 @@ import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Hero } from "@/components/marketing/Hero";
 import { Pillars } from "@/components/marketing/Pillars";
 import { Inspector } from "@/components/marketing/Inspector";
+import { ProofRibbon } from "@/components/marketing/ProofRibbon";
+import { Pricing } from "@/components/marketing/Pricing";
+import { CtaBanner } from "@/components/marketing/CtaBanner";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -65,6 +68,34 @@ describe("inspector", () => {
     expect(screen.getByText("89.1%")).toBeInTheDocument();
     expect(screen.getByText("4.8x")).toBeInTheDocument();
     expect(container.querySelectorAll("img")).toHaveLength(0);
+  });
+});
+
+describe("proof ribbon", () => {
+  it("renders the three stat pills", () => {
+    render(<ProofRibbon />);
+    expect(screen.getByText("18,700+")).toBeInTheDocument();
+    expect(screen.getByText("99.8%")).toBeInTheDocument();
+    expect(screen.getByText("3.4x")).toBeInTheDocument();
+  });
+});
+
+describe("pricing", () => {
+  it("renders both tiers with signup links", () => {
+    const { container } = render(<Pricing />);
+    expect(container.querySelector("#pricing")).toBeTruthy();
+    expect(screen.getByText("$89")).toBeInTheDocument();
+    expect(screen.getByText("$240")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Deploy Solo Node" })).toHaveAttribute("href", "/signup");
+    expect(screen.getByRole("link", { name: "Deploy Cluster Engine" })).toHaveAttribute("href", "/signup");
+  });
+});
+
+describe("cta banner", () => {
+  it("renders headline and CTA to signup", () => {
+    render(<CtaBanner />);
+    expect(screen.getByText("High-velocity creators spread. You scale.")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Deploy Fleet" })).toHaveAttribute("href", "/signup");
   });
 });
 
