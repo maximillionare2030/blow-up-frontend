@@ -8,6 +8,7 @@ import { Inspector } from "@/components/marketing/Inspector";
 import { ProofRibbon } from "@/components/marketing/ProofRibbon";
 import { Pricing } from "@/components/marketing/Pricing";
 import { CtaBanner } from "@/components/marketing/CtaBanner";
+import Landing from "@/app/(marketing)/page";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -96,6 +97,16 @@ describe("cta banner", () => {
     render(<CtaBanner />);
     expect(screen.getByText("High-velocity creators spread. You scale.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Deploy Fleet" })).toHaveAttribute("href", "/signup");
+  });
+});
+
+describe("landing page", () => {
+  it("assembles all sections in mockup order", () => {
+    const { container } = render(<Landing />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Turn high-velocity hooks into algorithmic reach.");
+    const ids = Array.from(container.querySelectorAll("section[id]")).map((s) => s.id);
+    expect(ids).toEqual(["features", "telemetry", "pricing"]);
+    expect(container.querySelectorAll("img")).toHaveLength(0);
   });
 });
 
