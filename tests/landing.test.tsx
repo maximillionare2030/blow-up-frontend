@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import MarketingLayout from "@/app/(marketing)/layout";
 import { MarketingHeader } from "@/components/marketing/MarketingHeader";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
+import { Hero } from "@/components/marketing/Hero";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -22,6 +23,21 @@ describe("marketing header", () => {
     expect(screen.getByRole("link", { name: "Features" })).toHaveAttribute("href", "#features");
     expect(screen.getByRole("link", { name: "Hook Telemetry" })).toHaveAttribute("href", "#telemetry");
     expect(screen.getByRole("link", { name: "Pricing" })).toHaveAttribute("href", "#pricing");
+  });
+});
+
+describe("hero", () => {
+  it("renders the headline and CTAs", () => {
+    render(<Hero />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Turn high-velocity hooks into algorithmic reach.");
+    expect(screen.getByRole("link", { name: /Start Free Trial/ })).toHaveAttribute("href", "/signup");
+    expect(screen.getByRole("link", { name: /Explore Live Sandbox/ })).toHaveAttribute("href", "#telemetry");
+  });
+  it("renders six fleet nodes with mono metrics and no images", () => {
+    const { container } = render(<Hero />);
+    expect(screen.getByText("61% @ 2s")).toBeInTheDocument();
+    expect(screen.getByText("1.4M Reach")).toBeInTheDocument();
+    expect(container.querySelectorAll("img")).toHaveLength(0);
   });
 });
 
