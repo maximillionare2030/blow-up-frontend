@@ -4,6 +4,7 @@ import { MarketingHeader } from "@/components/marketing/MarketingHeader";
 import { MarketingFooter } from "@/components/marketing/MarketingFooter";
 import { Hero } from "@/components/marketing/Hero";
 import { Pillars } from "@/components/marketing/Pillars";
+import { Inspector } from "@/components/marketing/Inspector";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -51,6 +52,19 @@ describe("pillars", () => {
     expect(screen.getByText("Empirical Retention Telemetry")).toBeInTheDocument();
     expect(screen.getByText("65.4% Hold")).toBeInTheDocument();
     expect(screen.getByText("79% outlier")).toBeInTheDocument();
+  });
+});
+
+describe("inspector", () => {
+  it("renders phone HUD and three metric readouts without images", () => {
+    const { container } = render(<Inspector />);
+    expect(container.querySelector("#telemetry")).toBeTruthy();
+    expect(screen.getByText("Track every frame, audio cue, and retention drop.")).toBeInTheDocument();
+    expect(screen.getByText("91.4%")).toBeInTheDocument();
+    expect(screen.getByText("73.8%")).toBeInTheDocument();
+    expect(screen.getByText("89.1%")).toBeInTheDocument();
+    expect(screen.getByText("4.8x")).toBeInTheDocument();
+    expect(container.querySelectorAll("img")).toHaveLength(0);
   });
 });
 
