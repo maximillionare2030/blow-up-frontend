@@ -9,6 +9,8 @@ import { ProofRibbon } from "@/components/marketing/ProofRibbon";
 import { Pricing } from "@/components/marketing/Pricing";
 import { CtaBanner } from "@/components/marketing/CtaBanner";
 import Landing from "@/app/(marketing)/page";
+import Privacy from "@/app/(marketing)/privacy/page";
+import Terms from "@/app/(marketing)/terms/page";
 
 describe("marketing layout", () => {
   it("wraps children and applies the display font scope", () => {
@@ -106,7 +108,23 @@ describe("landing page", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Turn high-velocity hooks into algorithmic reach.");
     const ids = Array.from(container.querySelectorAll("section[id]")).map((s) => s.id);
     expect(ids).toEqual(["features", "telemetry", "pricing"]);
-    expect(container.querySelectorAll("img")).toHaveLength(0);
+    // Only brand logo images allowed — no stock photos (AGENTS.md).
+    const imgs = Array.from(container.querySelectorAll("img"));
+    expect(imgs.length).toBeGreaterThan(0);
+    for (const img of imgs) expect(img.getAttribute("src")).toContain("/logo.svg");
+  });
+});
+
+describe("legal pages", () => {
+  it("privacy page renders with logo header", () => {
+    const { container } = render(<Privacy />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Privacy Policy");
+    expect(container.querySelector('img[src*="/logo.svg"]')).toBeTruthy();
+  });
+  it("terms page renders with logo header", () => {
+    const { container } = render(<Terms />);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Terms of Service");
+    expect(container.querySelector('img[src*="/logo.svg"]')).toBeTruthy();
   });
 });
 

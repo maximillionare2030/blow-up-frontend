@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { LogoMark } from "@/components/ui/Logo";
 
 const LINKS = [
   ["Dashboard", "/dashboard"], ["Hook Lab", "/hook-lab"], ["Library", "/library"],
@@ -11,7 +12,10 @@ export function Sidebar() {
   const path = usePathname();
   return (
     <nav className="flex w-[220px] shrink-0 flex-col border-r border-hairline p-3">
-      <div className="mb-6 px-2 font-mono text-[15px] font-bold">BlowUp</div>
+      <div className="mb-6 flex items-center gap-1.5 px-2">
+        <LogoMark size={28} />
+        <span className="font-mono text-[15px] font-bold">BlowUp</span>
+      </div>
       {LINKS.map(([label, href]) => (
         <Link key={href} href={href}
           className={`rounded-[6px] px-2 py-1.5 text-[13px] ${

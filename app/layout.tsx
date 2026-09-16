@@ -6,7 +6,10 @@ import Providers from "./providers";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
 
-export const metadata: Metadata = { title: "BlowUp" };
+export const metadata: Metadata = {
+  title: "BlowUp",
+  icons: { icon: "/logo.svg", apple: "/logo.png" },
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
