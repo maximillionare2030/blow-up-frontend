@@ -26,3 +26,15 @@ test("login failure shows the exact S17 error copy and clears password", async (
   expect(await screen.findByText("Email or password is incorrect.")).toBeInTheDocument();
   expect(screen.getByLabelText(/password/i)).toHaveValue("");
 });
+
+test("login page offers Continue with Google linking to the OAuth start endpoint", () => {
+  render(<LoginPage />);
+  const link = screen.getByRole("link", { name: /continue with google/i });
+  expect(link).toHaveAttribute("href", "/api/v1/auth/google/start");
+});
+
+test("signup page offers Continue with Google linking to the OAuth start endpoint", () => {
+  render(<SignupPage />);
+  const link = screen.getByRole("link", { name: /continue with google/i });
+  expect(link).toHaveAttribute("href", "/api/v1/auth/google/start");
+});

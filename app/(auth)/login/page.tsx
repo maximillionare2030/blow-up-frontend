@@ -5,6 +5,7 @@ import Link from "next/link";
 import { api, ApiError } from "@/lib/api/client";
 import { AuthPanel } from "@/components/auth/AuthPanel";
 import { Button } from "@/components/ui/Button";
+import { GoogleAuthButton } from "@/components/auth/GoogleAuthButton";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,6 +44,12 @@ export default function LoginPage() {
           className="rounded-[6px] border border-hairline px-3 py-2 text-[13px]" required  />
         <Button type="submit" disabled={busy}>Log in</Button>
       </form>
+      <div className="my-4 flex items-center gap-3">
+        <span className="flex-1 border-t border-hairline" />
+        <span className="label-11 text-neutral">or</span>
+        <span className="flex-1 border-t border-hairline" />
+      </div>
+      <GoogleAuthButton label="Continue with Google" />
       <p className="mt-4 text-[13px] text-neutral">
         New here? <Link className="underline" href="/signup">Create an account</Link>
       </p>
