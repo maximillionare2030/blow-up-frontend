@@ -45,3 +45,6 @@ stitch-designs/
 
 # local task tooling (not part of the app)
 .superpowers/
+.agents/
+.claude/
+
