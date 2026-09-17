@@ -93,6 +93,10 @@ export default function AccountsPage() {
                   <span className={`rounded-full px-2 py-0.5 text-[11px] ${getConnectionChipColor(a.connection_state)}`}>
                     {getConnectionChipLabel(a.connection_state)}
                   </span>
+                  <a href="/api/v1/accounts/connect/start"
+                    className="label-11 text-neutral underline hover:text-ink">
+                    Reauthorize
+                  </a>
                 </div>
                 <div className="text-[13px] text-neutral mb-2">{a.videos_tracked} videos tracked</div>
                 <div className="font-mono text-[18px]">median {fmt.views(a.baseline_median_views)} views</div>
