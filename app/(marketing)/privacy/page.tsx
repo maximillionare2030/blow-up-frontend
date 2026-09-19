@@ -19,18 +19,21 @@ export default function Privacy() {
       </header>
 
       <h1 className="text-3xl font-semibold tracking-tight">Privacy Policy</h1>
-      <p className="mt-2 text-[13px] text-neutral">Last updated: September 14, 2026</p>
+      <p className="mt-2 text-[13px] text-neutral">Last updated: September 18, 2026</p>
 
       <Section title="Who we are">
         <p>
           BlowUp (&ldquo;BlowUp&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is a tool that helps
           creators publish videos to their own TikTok accounts and compare how those videos
           perform. This policy explains what information we collect, how we use it, and the
-          choices you have. Questions: <a className="underline" href="mailto:maxtrinh4@gmail.com">maxtrinh4@gmail.com</a>.
+          choices you have. Questions: use our <Link className="underline" href="/contact?topic=privacy">contact form</Link>.
         </p>
       </Section>
 
       <Section title="Information we collect">
+        <p><strong className="text-ink">Contact requests.</strong> When you contact us, we collect
+          your name, email address, request type, and message. We store the request in our
+          database and send a copy to our business inbox so we can respond.</p>
         <p><strong className="text-ink">Account information.</strong> When you sign up we collect
           your email address and a password (stored only as a salted hash), or, if you sign in
           with Google, your email address and basic profile information provided by Google.</p>
@@ -52,15 +55,17 @@ export default function Privacy() {
         <p>We use this information solely to operate BlowUp: to authenticate you, to publish
           videos to the TikTok accounts you connect (only when you initiate a post), to ingest
           and display the performance of your videos, to compute comparisons across your own
-          posts, and to keep the service secure. We do not use your data for advertising, we do
+          posts, to respond to contact requests, and to keep the service secure. We do not use your data for advertising, we do
           not sell or rent your personal information, and we do not use your content or metrics
           to build products for anyone other than you.</p>
       </Section>
 
       <Section title="How information is shared">
         <p>We share data only with the service providers that host BlowUp, and only as needed to
-          run it: Supabase (database hosting), Cloudflare R2 (video file storage), Railway
-          (application hosting), Google (if you sign in with Google), and TikTok (to publish
+          run it: Supabase (database hosting, including stored contact requests), Cloudflare R2 (video
+          file storage), Railway (application hosting), Resend and our business email provider
+          (delivery and storage of contact request notifications), Google (if you sign in with
+          Google), and TikTok (to publish
           your videos and retrieve your video data through TikTok&rsquo;s official APIs, subject
           to TikTok&rsquo;s own <a className="underline" href="https://www.tiktok.com/legal/privacy-policy" target="_blank" rel="noreferrer">privacy policy</a>).
           We may also disclose information if required by law. There are no other third
@@ -72,9 +77,11 @@ export default function Privacy() {
           at any time from within BlowUp, or revoke BlowUp&rsquo;s access from TikTok&rsquo;s own
           settings (Settings &rarr; Security &amp; permissions &rarr; Apps &amp; websites); either action
           invalidates the stored tokens. To delete your BlowUp account and its associated data
-          — including stored tokens, uploaded videos, and ingested metrics — email
-          <a className="underline" href="mailto:maxtrinh4@gmail.com"> maxtrinh4@gmail.com</a> and
+          — including stored tokens, uploaded videos, and ingested metrics — submit an
+          <Link className="underline" href="/contact?topic=deletion"> account deletion request</Link> and
           we will complete the deletion within 30 days.</p>
+        <p>Contact requests and related correspondence are retained as needed to respond to and resolve your request
+          and meet applicable legal obligations. You can request its deletion through the contact form.</p>
       </Section>
 
       <Section title="Security">
@@ -96,7 +103,7 @@ export default function Privacy() {
 
       <Section title="Contact">
         <p>For any privacy question or request:
-          <a className="underline" href="mailto:maxtrinh4@gmail.com"> maxtrinh4@gmail.com</a>.</p>
+          <Link className="underline" href="/contact?topic=privacy"> use our contact form</Link>.</p>
       </Section>
     </div>
   );

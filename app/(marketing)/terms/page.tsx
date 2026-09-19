@@ -19,7 +19,7 @@ export default function Terms() {
       </header>
 
       <h1 className="text-3xl font-semibold tracking-tight">Terms of Service</h1>
-      <p className="mt-2 text-[13px] text-neutral">Last updated: September 14, 2026</p>
+      <p className="mt-2 text-[13px] text-neutral">Last updated: September 18, 2026</p>
 
       <Section title="1. What BlowUp is">
         <p>
@@ -88,7 +88,7 @@ export default function Terms() {
 
       <Section title="8. Termination">
         <p>You may stop using BlowUp and request deletion of your account and data at any time
-          by emailing <a className="underline" href="mailto:maxtrinh4@gmail.com">maxtrinh4@gmail.com</a>.
+          through our <Link className="underline" href="/contact?topic=deletion">account deletion request form</Link>.
           We may suspend or terminate the service or your access to it for violation of these
           terms, legal requirements, or discontinuation of the service; where practical we will
           give reasonable notice. Sections 4 (as to past use), 7, and 9 survive termination.</p>
@@ -104,7 +104,7 @@ export default function Terms() {
       </Section>
 
       <Section title="10. Contact">
-        <p><a className="underline" href="mailto:maxtrinh4@gmail.com">maxtrinh4@gmail.com</a></p>
+        <p>Reach us through our <Link className="underline" href="/contact?topic=legal">contact form</Link>.</p>
       </Section>
     </div>
   );
